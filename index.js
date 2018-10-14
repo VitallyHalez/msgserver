@@ -35,7 +35,7 @@ wss.on("connection", function(ws) {
     
     ws.on('close', function() {
         clients.forEach(client => {
-            client.send(method);
+            delete client;
         });
     });
 })
