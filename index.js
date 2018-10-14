@@ -8,15 +8,17 @@ app.use(express.static(__dirname + "/"))
 server.listen(port)
 var wss = new WebSocketServer({server: server})
 
-var clients = {}
+var clients = {};
 
 wss.on("connection", function(ws) {
-    clients['id'] = ws 
+    let id = 'client' + randomInteger(100000, 999999);
+    clients[id] = ws;
+
     ws.on('message', function(message) {
         message = JSON.parse(message);
         
-        if (message.method === "example to server") {
-            method = JSON.stringify({method: "example to client" });
+        if (message.method === "msgtoserver") {
+            method = JSON.stringify({method: "msgtoclient", msg: message.msg});
         }
 
         else if (message.method === "exmpltoserver") {
@@ -26,7 +28,8 @@ wss.on("connection", function(ws) {
         else { return; }
         
         clients.forEach(client => {
-            client.send(method);
+            if(client != ws)
+                client.send(method);
         });
     });
     
@@ -36,3 +39,9 @@ wss.on("connection", function(ws) {
         });
     });
 })
+
+function randomInteger(min, max) {
+    var rand = min + Math.random() * (max + 1 - min);
+    rand = Math.floor(rand);
+    return rand;
+}
