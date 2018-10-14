@@ -12,11 +12,10 @@ var clients = [];
 
 wss.on("connection", function(ws) {
     let id = 'client' + randomInteger(100000, 999999);
-    clients[id] = ws;
+    clients.push(ws);
 
     ws.on('message', function(message) {
         message = JSON.parse(message);
-        console.log('method: ' + message.method)
         if (message.method === "msgtoserver") {
             method = JSON.stringify({method: "msgtoclient", msg: message.msg});
         }
