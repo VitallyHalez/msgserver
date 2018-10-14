@@ -8,7 +8,7 @@ app.use(express.static(__dirname + "/"))
 server.listen(port)
 var wss = new WebSocketServer({server: server})
 
-var clients = {};
+var clients = [];
 
 wss.on("connection", function(ws) {
     let id = 'client' + randomInteger(100000, 999999);
