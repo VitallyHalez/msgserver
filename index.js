@@ -33,7 +33,10 @@ wss.on("connection", function(ws) {
     });
     
     ws.on('close', function() {
-        delete clients[id]
+        clients.forEach(client => {
+            if(client == ws)
+                delete client
+        });
     });
 })
 
