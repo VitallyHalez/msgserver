@@ -16,14 +16,14 @@ wss.on("connection", function(ws) {
 
     ws.on('message', function(message) {
         message = JSON.parse(message);
-        
+        console.log('method: ' + message.method)
         if (message.method === "msgtoserver") {
             method = JSON.stringify({method: "msgtoclient", msg: message.msg});
         }
 
-        else if (message.method === "exmpltoserver") {
-            method = JSON.stringify({game: ['example', 'data'], method:'exmplonclient'});
-        }
+        // else if (message.method === "exmpltoserver") {
+        //     method = JSON.stringify({game: ['example', 'data'], method:'exmplonclient'});
+        // }
         
         else { return; }
         
@@ -34,9 +34,7 @@ wss.on("connection", function(ws) {
     });
     
     ws.on('close', function() {
-        clients.forEach(client => {
-            delete client;
-        });
+        delete clients[id]
     });
 })
 
